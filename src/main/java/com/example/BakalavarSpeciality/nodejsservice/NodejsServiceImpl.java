@@ -16,89 +16,42 @@ import java.util.List;
 public class NodejsServiceImpl implements NodejsService{
     private final RestTemplate restTemplate;
     private String mainUrl = "http://localhost:5000/api/";
-//    @Override
-//    public String sendDataToNodeJsService(String id,Object result,String endpointurl) throws JSONException {
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        // Create the request body
-//        JSONObject requestBody = new JSONObject();
-//        requestBody.put("id", id);
-//        requestBody.put("data", result);
-//        // Create the HTTP entity with headers and body
-//        HttpEntity<String> request = new HttpEntity<>(requestBody.toString(), headers);
-//        // Send the POST request
-//        ResponseEntity<String> response = restTemplate.exchange(endpointurl, HttpMethod.POST, request, String.class);
-//        return response.getBody();
-//    }
-
     @Override
     public String creatCache(String cachename) {
         String endpointUrl = mainUrl + "creatcache/" + cachename;
-        // Set headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-
-        // Set request body
-        // You may need to construct a request body if required by the API
-        // For example:
-        // JSONObject requestBody = new JSONObject();
-        // requestBody.put("key", "value");
-        // String requestBodyString = requestBody.toString();
-
-        // Create the HTTP entity with headers and body
         HttpEntity<String> request = new HttpEntity<>(null, headers); // Pass null as the body for now
 
-        // Send the POST request
         ResponseEntity<String> response = restTemplate.exchange(endpointUrl, HttpMethod.POST, request, String.class);
 
-        // Check response status and return body
         if (response.getStatusCode() == HttpStatus.OK) {
             return response.getBody();
         } else {
-            // Handle error response
-            // For example:
-            // throw new RuntimeException("Failed to create cache. Status code: " + response.getStatusCodeValue());
-            return null; // Or handle the error in a different way
+            return null;
         }
     }
 
     @Override
     public String sendDataToCache(String cachename,String nameforcache,Object data){
         String endpointUrl = mainUrl + "senddatatocache/" + cachename;
-        // Set headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        // Set request body
-        // You may need to construct a request body if required by the API
-        // For example:
          JSONObject requestBody = new JSONObject();
          requestBody.put("name",nameforcache);
          requestBody.put("data",data);
          String requestBodyString = requestBody.toString();
-        // Create the HTTP entity with headers and body
-        HttpEntity<String> request = new HttpEntity<>(requestBodyString, headers); // Pass null as the body for now
-
-        // Send the POST request
+        HttpEntity<String> request = new HttpEntity<>(requestBodyString, headers);
         ResponseEntity<String> response = restTemplate.exchange(endpointUrl, HttpMethod.POST, request, String.class);
-
-        // Check response status and return body
         if (response.getStatusCode() == HttpStatus.OK) {
             return response.getBody();
         } else {
-            // Handle error response
-            // For example:
-            // throw new RuntimeException("Failed to create cache. Status code: " + response.getStatusCodeValue());
-            return null; // Or handle the error in a different way
+            return null;
         }
-
-
-
     }
     @Override
     public List<IxtisasDto> getdata(String cachename, String nameforcache) {
         String endpointUrl = mainUrl + "getdatafromcache/" + cachename + "/" + nameforcache;
-
-        // Send the GET request and fetch the response body as a List<IxtisasDto>
         ResponseEntity<List<IxtisasDto>> response = restTemplate.exchange(
                 endpointUrl,
                 HttpMethod.GET,
@@ -106,16 +59,10 @@ public class NodejsServiceImpl implements NodejsService{
                 new ParameterizedTypeReference<List<IxtisasDto>>() {
                 }
         );
-
-        // Check response status
         if (response.getStatusCode().is2xxSuccessful()) {
-            // Extract the List<IxtisasDto> from the response
             return response.getBody();
         } else {
-            // Handle error response
-            // For example:
-            // throw new RuntimeException("Failed to retrieve data from cache. Status code: " + response.getStatusCodeValue());
-            return null; // Or handle the error in a different way
+            return null;
         }
     }
     }

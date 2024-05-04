@@ -19,8 +19,6 @@ public class CustomIdGenerator implements IdentifierGenerator {
 
     @Override
     public Serializable generate(SharedSessionContractImplementor session, Object object) {
-        // Generate a unique ID using your custom logic
-        // For example, generating a random string
         byte[] randomBytes = new byte[16];
         new SecureRandom().nextBytes(randomBytes);
         String id = Base64.getEncoder().encodeToString(randomBytes).substring(0, 22);
